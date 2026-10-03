@@ -1,0 +1,124 @@
+/* ========================================================
+   DHANUSHKA LAKRUWAN - 80% WHITE CLEAN THEME WITH CYBER YELLOW & BLACK ACCENTS
+   Theme: 80% Crisp Clean White & Soft Platinum, High-Tech Black & Cyber Yellow
+   ======================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  --primary-yellow: #facc15;
+  --primary-yellow-hover: #eab308;
+  --primary-yellow-glow: rgba(250, 204, 21, 0.45);
+  --theme-white: #ffffff;
+  --theme-offwhite: #f8fafc;
+  --theme-light-card: #f1f5f9;
+  --theme-border: #e2e8f0;
+  --theme-black: #0f172a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  overflow-x: hidden;
+  position: relative;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Outfit', sans-serif;
+}
+
+.font-mono-code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom Scrollbar for Light Theme */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #facc15;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #eab308;
+}
+
+/* Yellow and Clean White Glows */
+.yellow-glow {
+  box-shadow: 0 10px 30px -5px rgba(250, 204, 21, 0.35);
+}
+
+.yellow-glow-sm {
+  box-shadow: 0 4px 14px rgba(250, 204, 21, 0.25);
+}
+
+.clean-card-shadow {
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+}
+
+.clean-card-shadow-hover:hover {
+  box-shadow: 0 20px 25px -5px rgba(250, 204, 21, 0.2), 0 8px 10px -6px rgba(15, 23, 42, 0.06);
+}
+
+/* Profile Image - ORIGINAL COLORS (No Grayscale, High Def & Vibrant) */
+.profile-img-original {
+  filter: none !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-container:hover .profile-img-original {
+  transform: scale(1.03);
+}
+
+/* Clipped Corners */
+.cyber-clip-corner {
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+
+.cyber-clip-btn {
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+/* Subtle Modern Clean Grid Background for 80% White theme */
+.bg-light-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+}
+
+/* Floating Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse-slow {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 22s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse-slow 16s linear infinite;
+}

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About & Stats | Dhanushka Lakruwan</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cyberYellow: '#facc15',
+            cyberDark: '#0f172a',
+            cyberCard: '#ffffff',
+            cyberBorder: 'rgba(250, 204, 21, 0.4)'
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen relative flex flex-col justify-between selection:bg-yellow-400 selection:text-black bg-light-grid">
+
+  <!-- Interactive Cyber Canvas Background -->
+  <canvas id="cyber-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- TOP GAMIFIED HUD NAVBAR -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-white/90 border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-yellow-400 text-slate-950 font-black flex items-center justify-center font-mono text-xl yellow-glow-sm group-hover:scale-105 transition-transform shadow-md">
+          DL
+        </div>
+        <div>
+          <span class="font-heading font-black text-lg tracking-wider text-slate-900 group-hover:text-yellow-600 transition-colors">DHANUSHKA</span>
+          <span class="text-xs block text-yellow-600 font-mono font-bold tracking-widest uppercase">AI ARCHITECT // LVL 99</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 font-medium">
+        <a href="index.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-terminal text-xs mr-1 text-yellow-500"></i> HQ
+        </a>
+        <a href="about.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-id-card-clip text-xs mr-1 text-yellow-500"></i> ABOUT & STATS
+        </a>
+        <a href="projects.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-cubes-stacked text-xs mr-1 text-yellow-500"></i> QUESTS (PROJECTS)
+        </a>
+        <a href="contact.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-satellite-dish text-xs mr-1 text-yellow-500"></i> CONTACT
+        </a>
+      </nav>
+
+      <!-- HUD Controls -->
+      <div class="hidden lg:flex items-center gap-5">
+        <div class="bg-white border border-slate-200 shadow-sm px-3.5 py-1.5 rounded-xl flex items-center gap-3">
+          <i class="fas fa-bolt text-yellow-500 animate-pulse text-sm"></i>
+          <div>
+            <div class="flex items-center justify-between text-[11px] font-mono text-slate-500 gap-4">
+              <span class="lvl-val font-bold text-yellow-600">LVL 2</span>
+              <span><span class="xp-val text-slate-800 font-bold">1250</span> / 2000 XP</span>
+            </div>
+            <div class="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1 border border-slate-200">
+              <div class="xp-progress-bar h-full bg-yellow-400 rounded-full transition-all duration-500" style="width: 25%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="sound-toggle-btn px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-600 hover:border-yellow-400 hover:text-yellow-600 transition-all text-xs font-mono flex items-center gap-2 shadow-sm">
+          <i class="sound-icon fas fa-volume-xmark"></i>
+          <span class="sound-text">SFX: OFF</span>
+        </button>
+
+        <a href="contact.html" class="cyber-clip-btn bg-yellow-400 text-slate-950 font-heading font-black text-xs uppercase tracking-wider px-5 py-2.5 hover:bg-yellow-300 yellow-glow-sm transition-all flex items-center gap-2 shadow-sm">
+          <span>Hire Me</span>
+          <i class="fas fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="flex md:hidden items-center gap-3">
+        <button class="sound-toggle-btn p-2 rounded-lg border border-slate-300 bg-white text-xs">
+          <i class="sound-icon fas fa-volume-xmark text-yellow-500"></i>
+        </button>
+        <button id="mobile-menu-toggle" class="p-2 text-slate-900 focus:outline-none">
+          <i class="fas fa-bars-staggered text-xl"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 flex flex-col gap-4 font-mono text-sm shadow-md">
+      <a href="index.html" class="text-slate-600 hover:text-yellow-600 py-1 flex items-center gap-2"><i class="fas fa-terminal text-xs"></i> HQ (Home)</a>
+      <a href="about.html" class="text-yellow-600 font-bold py-1 flex items-center gap-2"><i class="fas fa-id-card-clip text-xs"></i> About & Stats</a>
+      <a href="projects.html" class="text-slate-600 hover:text-yellow-600 py-1 flex items-center gap-2"><i class="fas fa-cubes-stacked text-xs"></i> Quests (Projects)</a>
+      <a href="contact.html" class="text-slate-600 hover:text-yellow-600 py-1 flex items-center gap-2"><i class="fas fa-satellite-dish text-xs"></i> Contact</a>
+    </div>
+  </header>
+
+  <!-- MAIN ABOUT CONTENT -->
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 flex-1">
+    
+    <!-- Title Header -->
+    <div class="border-b border-slate-200 pb-8 mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-yellow-50 border border-yellow-300 text-yellow-700 font-mono text-xs mb-3 font-semibold">
+        <i class="fas fa-fingerprint"></i> DOSSIER & ATTRIBUTES
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 font-heading">
+        Character Lore & <span class="text-yellow-500">Tech Attributes</span>
+      </h1>
+      <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-3xl font-mono">
+        Dhanushka Lakruwan — Class: Full Stack AI Engineer. Specializing in high-throughput cognitive systems, intuitive interfaces, and scalable microservices.
+      </p>
+    </div>
+
+    <!-- 2 Column Layout: Profile Lore & RPG Attribute Stats -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      
+      <!-- Left Column: Biography & Background -->
+      <div class="lg:col-span-6 space-y-6">
+        
+        <div class="bg-white border border-slate-200 p-7 rounded-2xl relative overflow-hidden clean-card-shadow">
+          <div class="absolute top-0 right-0 bg-yellow-100 border-b border-l border-yellow-300 px-3.5 py-1 font-mono text-[11px] text-yellow-800 font-bold">
+            ORIGIN STORY
+          </div>
+          <h2 class="text-xl font-heading font-black text-slate-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-book-skull text-yellow-500"></i> The Genesis
+          </h2>
+          <p class="text-slate-600 text-sm leading-relaxed mb-4">
+            Hello! I'm <strong class="text-yellow-600 font-bold">Dhanushka Lakruwan</strong>. As a passionate Full Stack AI Web Developer, I thrive at the frontier where modern web application architecture intersects with autonomous machine intelligence.
+          </p>
+          <p class="text-slate-600 text-sm leading-relaxed mb-4">
+            My mission is to transform complex workflows into fluid, lightning-fast digital experiences. Whether building multimodal LLM copilot agents, real-time analytics dashboards, or end-to-end cloud platforms, my priority is razor-sharp design, unbreakable stability, and code elegance.
+          </p>
+
+          <div class="pt-4 border-t border-slate-100 grid grid-cols-2 gap-4 text-xs font-mono">
+            <div>
+              <span class="text-slate-400 block font-semibold">CODENAME:</span>
+              <span class="text-slate-900 font-bold">Dhanushka Lakruwan</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-semibold">ROLE:</span>
+              <span class="text-yellow-600 font-bold">Full Stack AI Developer</span>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-semibold">DIRECT HOTLINE:</span>
+              <a href="tel:0724380542" class="text-slate-900 hover:text-yellow-600 font-bold transition-colors">072 438 0542</a>
+            </div>
+            <div>
+              <span class="text-slate-400 block font-semibold">ENCRYPTED COMM:</span>
+              <a href="mailto:mdlakruwan2020@gmail.com" class="text-yellow-600 underline font-bold">mdlakruwan2020@gmail.com</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quest Milestones / Experience Timeline -->
+        <div class="bg-white border border-slate-200 p-7 rounded-2xl clean-card-shadow">
+          <h2 class="text-xl font-heading font-black text-slate-900 mb-6 flex items-center gap-2">
+            <i class="fas fa-route text-yellow-500"></i> Quest Milestones (Career)
+          </h2>
+
+          <div class="space-y-6 relative border-l-2 border-yellow-400/50 ml-3 pl-6">
+            
+            <!-- Milestone 1 -->
+            <div class="relative group">
+              <span class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-yellow-400 yellow-glow-sm group-hover:scale-125 transition-transform shadow"></span>
+              <span class="text-xs font-mono text-yellow-600 font-bold">2024 - PRESENT</span>
+              <h3 class="text-base font-bold text-slate-900 mt-0.5">Senior Full Stack AI Architect</h3>
+              <p class="text-slate-600 text-xs mt-1 leading-relaxed font-mono">
+                Architecting generative enterprise systems, LangChain vector retrievals, and ultra-fast responsive React/FastAPI ecosystems.
+              </p>
+            </div>
+
+            <!-- Milestone 2 -->
+            <div class="relative group">
+              <span class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-white border-2 border-yellow-500 group-hover:scale-125 transition-transform shadow"></span>
+              <span class="text-xs font-mono text-yellow-600 font-bold">2022 - 2024</span>
+              <h3 class="text-base font-bold text-slate-900 mt-0.5">Full Stack Web Engineer</h3>
+              <p class="text-slate-600 text-xs mt-1 leading-relaxed font-mono">
+                Engineered complex SaaS platforms, REST/GraphQL APIs, distributed Postgres databases, and bespoke UI component systems.
+              </p>
+            </div>
+
+            <!-- Milestone 3 -->
+            <div class="relative group">
+              <span class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-slate-200 border-2 border-slate-400 group-hover:scale-125 transition-transform"></span>
+              <span class="text-xs font-mono text-yellow-600 font-bold">2020 - 2022</span>
+              <h3 class="text-base font-bold text-slate-900 mt-0.5">AI & Software Engineering Apprentice</h3>
+              <p class="text-slate-600 text-xs mt-1 leading-relaxed font-mono">
+                Machine learning model training, computer vision scripting, algorithmic problem solving, and modern responsive frontend design.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: RPG Stat Bars & Skill Tree Matrix -->
+      <div class="lg:col-span-6 space-y-6">
+        
+        <!-- RPG Attribute Radar / Stat Bars -->
+        <div class="bg-white border border-slate-200 p-7 rounded-2xl clean-card-shadow">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-heading font-black text-slate-900 flex items-center gap-2">
+              <i class="fas fa-chart-simple text-yellow-500"></i> Combat & Tech Attributes
+            </h2>
+            <span class="text-xs font-mono text-yellow-700 bg-yellow-50 border border-yellow-300 px-2 py-0.5 rounded font-bold">CLASS: TITAN</span>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Stat 1 -->
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-700 font-bold"><i class="fas fa-brain text-yellow-500 mr-2"></i>Generative AI & LLM Systems</span>
+                <span class="text-yellow-600 font-black">96%</span>
+              </div>
+              <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                <div class="h-full bg-yellow-400 rounded-full" style="width: 96%"></div>
+              </div>
+            </div>
+
+            <!-- Stat 2 -->
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-700 font-bold"><i class="fas fa-code text-yellow-500 mr-2"></i>Frontend UI/UX & Gamification</span>
+                <span class="text-yellow-600 font-black">94%</span>
+              </div>
+              <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                <div class="h-full bg-yellow-400 rounded-full" style="width: 94%"></div>
+              </div>
+            </div>
+
+            <!-- Stat 3 -->
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-700 font-bold"><i class="fas fa-server text-yellow-500 mr-2"></i>Backend Architecture & Python</span>
+                <span class="text-yellow-600 font-black">92%</span>
+              </div>
+              <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                <div class="h-full bg-yellow-400 rounded-full" style="width: 92%"></div>
+              </div>
+            </div>
+
+            <!-- Stat 4 -->
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-700 font-bold"><i class="fas fa-database text-yellow-500 mr-2"></i>Vector DBs & Embeddings</span>
+                <span class="text-yellow-600 font-black">90%</span>
+              </div>
+              <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                <div class="h-full bg-yellow-400 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+
+            <!-- Stat 5 -->
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-700 font-bold"><i class="fas fa-cloud text-yellow-500 mr-2"></i>Cloud & DevOps Deployment</span>
+                <span class="text-yellow-600 font-black">88%</span>
+              </div>
+              <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                <div class="h-full bg-yellow-400 rounded-full" style="width: 88%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inventory / Tech Stack Tree -->
+        <div class="bg-white border border-slate-200 p-7 rounded-2xl clean-card-shadow">
+          <h2 class="text-xl font-heading font-black text-slate-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-boxes-stacked text-yellow-500"></i> Equipped Tech Inventory
+          </h2>
+          <p class="text-slate-500 text-xs font-mono mb-4">Click any gear slot to trigger an audio frequency scan:</p>
+
+          <div class="flex flex-wrap gap-2">
+            <!-- Tech badges -->
+            <button onclick="cyberGamify.addXP(50, 'Inspected Python Core')" class="bg-slate-50 border border-slate-200 hover:border-yellow-400 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-700 hover:text-yellow-700 transition-all flex items-center gap-2 font-semibold">
+              <i class="fab fa-python text-yellow-500 text-sm"></i> Python / PyTorch
+            </button>
+            <button onclick="cyberGamify.addXP(50, 'Inspected React Core')" class="bg-slate-50 border border-slate-200 hover:border-yellow-400 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-700 hover:text-yellow-700 transition-all flex items-center gap-2 font-semibold">
+              <i class="fab fa-react text-yellow-500 text-sm"></i> React / Next.js
+            </button>
+            <button onclick="cyberGamify.addXP(50, 'Inspected TypeScript')" class="bg-slate-50 border border-slate-200 hover:border-yellow-400 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-700 hover:text-yellow-700 transition-all flex items-center gap-2 font-semibold">
+              <i class="fab fa-js text-yellow-500 text-sm"></i> JavaScript / TS
+            </button>
+            <button onclick="cyberGamify.addXP(50, 'Inspected LangChain')" class="bg-slate-50 border border-slate-200 hover:border-yellow-400 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-700 hover:text-yellow-700 transition-all flex items-center gap-2 font-semibold">
+              <i class="fas fa-network-wired text-yellow-500 text-sm"></i> LangChain / LlamaIndex
+            </button>
+            <button onclick="cyberGamify.addXP(50, 'Inspected OpenAI API')" class="bg-slate-50 border border-slate-200 hover:border-yellow-400 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-700 hover:text-yellow-700 transition-all flex items-center gap-2 font-semibold">
+              <i class="fas fa-robot text-yellow-500 text-sm"></i> OpenAI & Gemini APIs
+            </button>
+            <button onclick="cyberGamify.addXP(50, 'Inspected Tailwind CSS')" class="bg-slate-50 border border-slate-200 hover:border-yellow-400 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-700 hover:text-yellow-700 transition-all flex items-center gap-2 font-semibold">
+              <i class="fas fa-wind text-yellow-500 text-sm"></i> Tailwind CSS
+            </button>
+            <button onclick="cyberGamify.addXP(50, 'Inspected FastAPI')" class="bg-slate-50 border border-slate-200 hover:border-yellow-400 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-700 hover:text-yellow-700 transition-all flex items-center gap-2 font-semibold">
+              <i class="fas fa-bolt text-yellow-500 text-sm"></i> FastAPI / Node.js
+            </button>
+            <button onclick="cyberGamify.addXP(50, 'Inspected PostgreSQL')" class="bg-slate-50 border border-slate-200 hover:border-yellow-400 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-700 hover:text-yellow-700 transition-all flex items-center gap-2 font-semibold">
+              <i class="fas fa-database text-yellow-500 text-sm"></i> PostgreSQL / pgvector
+            </button>
+            <button onclick="cyberGamify.addXP(50, 'Inspected Docker')" class="bg-slate-50 border border-slate-200 hover:border-yellow-400 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-700 hover:text-yellow-700 transition-all flex items-center gap-2 font-semibold">
+              <i class="fab fa-docker text-yellow-500 text-sm"></i> Docker / Kubernetes
+            </button>
+            <button onclick="cyberGamify.addXP(50, 'Inspected Git Core')" class="bg-slate-50 border border-slate-200 hover:border-yellow-400 px-3 py-1.5 rounded-xl text-xs font-mono text-slate-700 hover:text-yellow-700 transition-all flex items-center gap-2 font-semibold">
+              <i class="fab fa-git-alt text-yellow-500 text-sm"></i> Git & CI/CD
+            </button>
+          </div>
+        </div>
+
+        <!-- Quest Direct CTA Card -->
+        <div class="bg-gradient-to-r from-yellow-100/80 to-white border border-yellow-400/60 p-7 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 clean-card-shadow">
+          <div>
+            <h3 class="text-lg font-heading font-black text-slate-900">Ready to initiate a quest?</h3>
+            <p class="text-slate-600 text-xs font-mono mt-1">Let's build intelligent, game-changing software together.</p>
+          </div>
+          <a href="contact.html" class="cyber-clip-btn bg-yellow-400 hover:bg-yellow-300 text-slate-950 px-5 py-3 font-heading font-bold text-xs uppercase tracking-wider yellow-glow-sm transition-all whitespace-nowrap shadow-sm">
+            Transmit Signal &rarr;
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- CLEAN WHITE FOOTER -->
+  <footer class="relative z-10 border-t border-slate-200 bg-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+        <span class="font-semibold">© 2026 Dhanushka Lakruwan. All Systems Engineered.</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="tel:0724380542" class="hover:text-yellow-600 transition-colors font-medium"><i class="fas fa-phone mr-1 text-yellow-500"></i> 072 438 0542</a>
+        <a href="mailto:mdlakruwan2020@gmail.com" class="hover:text-yellow-600 transition-colors font-medium"><i class="fas fa-envelope mr-1 text-yellow-500"></i> mdlakruwan2020@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

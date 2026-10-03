@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quests & Projects | Dhanushka Lakruwan</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cyberYellow: '#facc15',
+            cyberDark: '#0f172a',
+            cyberCard: '#ffffff',
+            cyberBorder: 'rgba(250, 204, 21, 0.4)'
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen relative flex flex-col justify-between selection:bg-yellow-400 selection:text-black bg-light-grid">
+
+  <!-- Interactive Cyber Canvas Background -->
+  <canvas id="cyber-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- TOP GAMIFIED HUD NAVBAR -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-white/90 border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-yellow-400 text-slate-950 font-black flex items-center justify-center font-mono text-xl yellow-glow-sm group-hover:scale-105 transition-transform shadow-md">
+          DL
+        </div>
+        <div>
+          <span class="font-heading font-black text-lg tracking-wider text-slate-900 group-hover:text-yellow-600 transition-colors">DHANUSHKA</span>
+          <span class="text-xs block text-yellow-600 font-mono font-bold tracking-widest uppercase">AI ARCHITECT // LVL 99</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 font-medium">
+        <a href="index.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-terminal text-xs mr-1 text-yellow-500"></i> HQ
+        </a>
+        <a href="about.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-id-card-clip text-xs mr-1 text-yellow-500"></i> ABOUT & STATS
+        </a>
+        <a href="projects.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-cubes-stacked text-xs mr-1 text-yellow-500"></i> QUESTS (PROJECTS)
+        </a>
+        <a href="contact.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-satellite-dish text-xs mr-1 text-yellow-500"></i> CONTACT
+        </a>
+      </nav>
+
+      <!-- HUD Controls -->
+      <div class="hidden lg:flex items-center gap-5">
+        <div class="bg-white border border-slate-200 shadow-sm px-3.5 py-1.5 rounded-xl flex items-center gap-3">
+          <i class="fas fa-bolt text-yellow-500 animate-pulse text-sm"></i>
+          <div>
+            <div class="flex items-center justify-between text-[11px] font-mono text-slate-500 gap-4">
+              <span class="lvl-val font-bold text-yellow-600">LVL 2</span>
+              <span><span class="xp-val text-slate-800 font-bold">1250</span> / 2000 XP</span>
+            </div>
+            <div class="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1 border border-slate-200">
+              <div class="xp-progress-bar h-full bg-yellow-400 rounded-full transition-all duration-500" style="width: 25%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="sound-toggle-btn px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-600 hover:border-yellow-400 hover:text-yellow-600 transition-all text-xs font-mono flex items-center gap-2 shadow-sm">
+          <i class="sound-icon fas fa-volume-xmark"></i>
+          <span class="sound-text">SFX: OFF</span>
+        </button>
+
+        <a href="contact.html" class="cyber-clip-btn bg-yellow-400 text-slate-950 font-heading font-black text-xs uppercase tracking-wider px-5 py-2.5 hover:bg-yellow-300 yellow-glow-sm transition-all flex items-center gap-2 shadow-sm">
+          <span>Hire Me</span>
+          <i class="fas fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="flex md:hidden items-center gap-3">
+        <button class="sound-toggle-btn p-2 rounded-lg border border-slate-300 bg-white text-xs">
+          <i class="sound-icon fas fa-volume-xmark text-yellow-500"></i>
+        </button>
+        <button id="mobile-menu-toggle" class="p-2 text-slate-900 focus:outline-none">
+          <i class="fas fa-bars-staggered text-xl"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 flex flex-col gap-4 font-mono text-sm shadow-md">
+      <a href="index.html" class="text-slate-600 hover:text-yellow-600 py-1 flex items-center gap-2"><i class="fas fa-terminal text-xs"></i> HQ (Home)</a>
+      <a href="about.html" class="text-slate-600 hover:text-yellow-600 py-1 flex items-center gap-2"><i class="fas fa-id-card-clip text-xs"></i> About & Stats</a>
+      <a href="projects.html" class="text-yellow-600 font-bold py-1 flex items-center gap-2"><i class="fas fa-cubes-stacked text-xs"></i> Quests (Projects)</a>
+      <a href="contact.html" class="text-slate-600 hover:text-yellow-600 py-1 flex items-center gap-2"><i class="fas fa-satellite-dish text-xs"></i> Contact</a>
+    </div>
+  </header>
+
+  <!-- MAIN QUEST CHAMBER -->
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 flex-1">
+    
+    <!-- Chamber Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-200 pb-8 mb-10 gap-6">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-yellow-50 border border-yellow-300 text-yellow-700 font-mono text-xs mb-3 font-semibold">
+          <i class="fas fa-trophy"></i> COMPLETED MISSIONS ARCHIVE
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 font-heading">
+          Chamber of <span class="text-yellow-500">Quests & Projects</span>
+        </h1>
+        <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl font-mono">
+          Explore deployed AI architectures, high-performance web systems, and full-stack software built by Dhanushka Lakruwan.
+        </p>
+      </div>
+
+      <!-- Gamified Quest Rewards Tracker -->
+      <div class="bg-white border border-yellow-400/60 p-4 rounded-2xl font-mono text-xs flex items-center gap-4 clean-card-shadow">
+        <div class="w-12 h-12 rounded-xl bg-yellow-100 border border-yellow-400 flex items-center justify-center text-yellow-600 text-xl yellow-glow-sm shadow-sm">
+          <i class="fas fa-award"></i>
+        </div>
+        <div>
+          <div class="text-slate-400 text-[10px] uppercase font-bold">Total Quest XP Available</div>
+          <div class="text-lg font-black text-slate-900">+3,600 XP In Chamber</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="flex flex-wrap gap-2 mb-10 font-mono text-xs" id="quest-filters">
+      <button onclick="filterQuests('all')" class="filter-btn active-filter px-4 py-2.5 rounded-xl bg-yellow-400 text-slate-950 font-bold uppercase tracking-wider transition-all shadow-sm">
+        All Missions (6)
+      </button>
+      <button onclick="filterQuests('ai')" class="filter-btn px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 hover:border-yellow-400 uppercase tracking-wider transition-all shadow-sm font-semibold">
+        <i class="fas fa-brain text-yellow-500 mr-1.5"></i> AI & Agents (3)
+      </button>
+      <button onclick="filterQuests('web')" class="filter-btn px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 hover:border-yellow-400 uppercase tracking-wider transition-all shadow-sm font-semibold">
+        <i class="fas fa-globe text-yellow-500 mr-1.5"></i> Full Stack Web (2)
+      </button>
+      <button onclick="filterQuests('gamify')" class="filter-btn px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 hover:border-yellow-400 uppercase tracking-wider transition-all shadow-sm font-semibold">
+        <i class="fas fa-gamepad text-yellow-500 mr-1.5"></i> Gamified UX (1)
+      </button>
+    </div>
+
+    <!-- Project Quests Grid (White Cards with Yellow accents) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="quests-container">
+
+      <!-- Quest 1: NeuroFlow AI -->
+      <div class="quest-card bg-white border border-slate-200 hover:border-yellow-400 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between group interactive-card clean-card-shadow hover:-translate-y-1.5 hover:shadow-xl" data-category="ai">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-[10px] font-mono px-2.5 py-1 rounded-md bg-yellow-50 border border-yellow-300 text-yellow-700 font-bold">
+              MISSION #01 // AI CORE
+            </span>
+            <span class="text-xs font-mono text-slate-400 font-bold group-hover:text-yellow-600 transition-colors">+600 XP</span>
+          </div>
+
+          <div class="h-44 rounded-xl bg-slate-900 border border-slate-800 relative overflow-hidden mb-5 flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-gradient-to-tr from-yellow-400/20 via-transparent to-transparent"></div>
+            <i class="fas fa-brain text-5xl text-yellow-400 group-hover:scale-110 transition-transform"></i>
+            <div class="absolute bottom-2 right-3 font-mono text-[10px] text-zinc-400">STATUS: DEPLOYED</div>
+          </div>
+
+          <h3 class="font-heading font-black text-xl text-slate-900 group-hover:text-yellow-600 transition-colors">
+            NeuroFlow RAG Copilot
+          </h3>
+          <p class="text-slate-600 text-xs font-mono mt-2 leading-relaxed">
+            Enterprise Generative AI platform integrating autonomous multi-agent reasoning, vector semantic search over 10M+ documents, and sub-second retrieval latency.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">Python</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">FastAPI</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">LangChain</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-yellow-50 border border-yellow-300 text-[10px] font-mono text-yellow-700 font-bold">Pinecone</span>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+          <button onclick="cyberGamify.addXP(100, 'Launched NeuroFlow Preview')" class="text-xs font-mono text-yellow-600 hover:text-yellow-700 font-bold flex items-center gap-1.5">
+            <i class="fas fa-arrow-up-right-from-square"></i> Live Intel
+          </button>
+          <a href="https://github.com" target="_blank" class="text-xs font-mono text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1 font-semibold">
+            <i class="fab fa-github"></i> Repository
+          </a>
+        </div>
+      </div>
+
+      <!-- Quest 2: CyberNexus E-Commerce -->
+      <div class="quest-card bg-white border border-slate-200 hover:border-yellow-400 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between group interactive-card clean-card-shadow hover:-translate-y-1.5 hover:shadow-xl" data-category="web">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-[10px] font-mono px-2.5 py-1 rounded-md bg-yellow-50 border border-yellow-300 text-yellow-700 font-bold">
+              MISSION #02 // FULL STACK
+            </span>
+            <span class="text-xs font-mono text-slate-400 font-bold group-hover:text-yellow-600 transition-colors">+550 XP</span>
+          </div>
+
+          <div class="h-44 rounded-xl bg-slate-900 border border-slate-800 relative overflow-hidden mb-5 flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-gradient-to-tr from-yellow-400/20 via-transparent to-transparent"></div>
+            <i class="fas fa-cart-shopping text-5xl text-yellow-400 group-hover:scale-110 transition-transform"></i>
+            <div class="absolute bottom-2 right-3 font-mono text-[10px] text-zinc-400">STATUS: LIVE</div>
+          </div>
+
+          <h3 class="font-heading font-black text-xl text-slate-900 group-hover:text-yellow-600 transition-colors">
+            CyberNexus Commerce Engine
+          </h3>
+          <p class="text-slate-600 text-xs font-mono mt-2 leading-relaxed">
+            Scalable next-gen headless shopping system with real-time stock sync, Stripe payment intents, sub-50ms SSR pages, and predictive AI product recommendations.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">Next.js 14</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">TypeScript</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">Tailwind CSS</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-yellow-50 border border-yellow-300 text-[10px] font-mono text-yellow-700 font-bold">Stripe API</span>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+          <button onclick="cyberGamify.addXP(100, 'Launched CyberNexus Preview')" class="text-xs font-mono text-yellow-600 hover:text-yellow-700 font-bold flex items-center gap-1.5">
+            <i class="fas fa-arrow-up-right-from-square"></i> Live Intel
+          </button>
+          <a href="https://github.com" target="_blank" class="text-xs font-mono text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1 font-semibold">
+            <i class="fab fa-github"></i> Repository
+          </a>
+        </div>
+      </div>
+
+      <!-- Quest 3: Synapse Multi-Agent Studio -->
+      <div class="quest-card bg-white border border-slate-200 hover:border-yellow-400 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between group interactive-card clean-card-shadow hover:-translate-y-1.5 hover:shadow-xl" data-category="ai">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-[10px] font-mono px-2.5 py-1 rounded-md bg-yellow-50 border border-yellow-300 text-yellow-700 font-bold">
+              MISSION #03 // AGENTS
+            </span>
+            <span class="text-xs font-mono text-slate-400 font-bold group-hover:text-yellow-600 transition-colors">+700 XP</span>
+          </div>
+
+          <div class="h-44 rounded-xl bg-slate-900 border border-slate-800 relative overflow-hidden mb-5 flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-gradient-to-tr from-yellow-400/20 via-transparent to-transparent"></div>
+            <i class="fas fa-network-wired text-5xl text-yellow-400 group-hover:scale-110 transition-transform"></i>
+            <div class="absolute bottom-2 right-3 font-mono text-[10px] text-zinc-400">STATUS: PROD</div>
+          </div>
+
+          <h3 class="font-heading font-black text-xl text-slate-900 group-hover:text-yellow-600 transition-colors">
+            Synapse Autonomous Agents
+          </h3>
+          <p class="text-slate-600 text-xs font-mono mt-2 leading-relaxed">
+            Multi-agent cooperative workspace orchestration where autonomous software agents write, critique, test, and containerize code autonomously.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">AutoGen</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">Gemini 1.5</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">Docker</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-yellow-50 border border-yellow-300 text-[10px] font-mono text-yellow-700 font-bold">WebSockets</span>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+          <button onclick="cyberGamify.addXP(100, 'Launched Synapse Preview')" class="text-xs font-mono text-yellow-600 hover:text-yellow-700 font-bold flex items-center gap-1.5">
+            <i class="fas fa-arrow-up-right-from-square"></i> Live Intel
+          </button>
+          <a href="https://github.com" target="_blank" class="text-xs font-mono text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1 font-semibold">
+            <i class="fab fa-github"></i> Repository
+          </a>
+        </div>
+      </div>
+
+      <!-- Quest 4: OmniVision AI Scanner -->
+      <div class="quest-card bg-white border border-slate-200 hover:border-yellow-400 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between group interactive-card clean-card-shadow hover:-translate-y-1.5 hover:shadow-xl" data-category="ai">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-[10px] font-mono px-2.5 py-1 rounded-md bg-yellow-50 border border-yellow-300 text-yellow-700 font-bold">
+              MISSION #04 // VISION
+            </span>
+            <span class="text-xs font-mono text-slate-400 font-bold group-hover:text-yellow-600 transition-colors">+650 XP</span>
+          </div>
+
+          <div class="h-44 rounded-xl bg-slate-900 border border-slate-800 relative overflow-hidden mb-5 flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-gradient-to-tr from-yellow-400/20 via-transparent to-transparent"></div>
+            <i class="fas fa-eye text-5xl text-yellow-400 group-hover:scale-110 transition-transform"></i>
+            <div class="absolute bottom-2 right-3 font-mono text-[10px] text-zinc-400">STATUS: DEPLOYED</div>
+          </div>
+
+          <h3 class="font-heading font-black text-xl text-slate-900 group-hover:text-yellow-600 transition-colors">
+            OmniVision Defect Detection
+          </h3>
+          <p class="text-slate-600 text-xs font-mono mt-2 leading-relaxed">
+            Real-time optical defect classification in factory production lines using YOLOv8, high-framerate WebRTC streams, and cloud dashboards.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">PyTorch</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">YOLOv8</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">FastAPI</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-yellow-50 border border-yellow-300 text-[10px] font-mono text-yellow-700 font-bold">React</span>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+          <button onclick="cyberGamify.addXP(100, 'Launched OmniVision Preview')" class="text-xs font-mono text-yellow-600 hover:text-yellow-700 font-bold flex items-center gap-1.5">
+            <i class="fas fa-arrow-up-right-from-square"></i> Live Intel
+          </button>
+          <a href="https://github.com" target="_blank" class="text-xs font-mono text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1 font-semibold">
+            <i class="fab fa-github"></i> Repository
+          </a>
+        </div>
+      </div>
+
+      <!-- Quest 5: PulseMatrix Gamified Hub -->
+      <div class="quest-card bg-white border border-slate-200 hover:border-yellow-400 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between group interactive-card clean-card-shadow hover:-translate-y-1.5 hover:shadow-xl" data-category="gamify">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-[10px] font-mono px-2.5 py-1 rounded-md bg-yellow-50 border border-yellow-300 text-yellow-700 font-bold">
+              MISSION #05 // GAMIFY
+            </span>
+            <span class="text-xs font-mono text-slate-400 font-bold group-hover:text-yellow-600 transition-colors">+500 XP</span>
+          </div>
+
+          <div class="h-44 rounded-xl bg-slate-900 border border-slate-800 relative overflow-hidden mb-5 flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-gradient-to-tr from-yellow-400/20 via-transparent to-transparent"></div>
+            <i class="fas fa-gamepad text-5xl text-yellow-400 group-hover:scale-110 transition-transform"></i>
+            <div class="absolute bottom-2 right-3 font-mono text-[10px] text-zinc-400">STATUS: PROD</div>
+          </div>
+
+          <h3 class="font-heading font-black text-xl text-slate-900 group-hover:text-yellow-600 transition-colors">
+            PulseMatrix Arcade Experience
+          </h3>
+          <p class="text-slate-600 text-xs font-mono mt-2 leading-relaxed">
+            Gamified interactive web platform with pure HTML5 Canvas particle physics, Web Audio synthesizer effects, dynamic quest achievements and leaderboard ranking.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">Canvas 2D</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">Web Audio API</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">Vanilla JS</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-yellow-50 border border-yellow-300 text-[10px] font-mono text-yellow-700 font-bold">Tailwind</span>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+          <button onclick="cyberGamify.addXP(100, 'Launched PulseMatrix Preview')" class="text-xs font-mono text-yellow-600 hover:text-yellow-700 font-bold flex items-center gap-1.5">
+            <i class="fas fa-arrow-up-right-from-square"></i> Live Intel
+          </button>
+          <a href="https://github.com" target="_blank" class="text-xs font-mono text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1 font-semibold">
+            <i class="fab fa-github"></i> Repository
+          </a>
+        </div>
+      </div>
+
+      <!-- Quest 6: CloudOrbit Microservices -->
+      <div class="quest-card bg-white border border-slate-200 hover:border-yellow-400 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between group interactive-card clean-card-shadow hover:-translate-y-1.5 hover:shadow-xl" data-category="web">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-[10px] font-mono px-2.5 py-1 rounded-md bg-yellow-50 border border-yellow-300 text-yellow-700 font-bold">
+              MISSION #06 // CLOUD
+            </span>
+            <span class="text-xs font-mono text-slate-400 font-bold group-hover:text-yellow-600 transition-colors">+600 XP</span>
+          </div>
+
+          <div class="h-44 rounded-xl bg-slate-900 border border-slate-800 relative overflow-hidden mb-5 flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-gradient-to-tr from-yellow-400/20 via-transparent to-transparent"></div>
+            <i class="fas fa-server text-5xl text-yellow-400 group-hover:scale-110 transition-transform"></i>
+            <div class="absolute bottom-2 right-3 font-mono text-[10px] text-zinc-400">STATUS: PROD</div>
+          </div>
+
+          <h3 class="font-heading font-black text-xl text-slate-900 group-hover:text-yellow-600 transition-colors">
+            CloudOrbit Distributed Gateway
+          </h3>
+          <p class="text-slate-600 text-xs font-mono mt-2 leading-relaxed">
+            High-concurrency API gateway and asynchronous telemetry orchestrator supporting up to 50k requests/sec with automated failover and rate limiting.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">Go / Node</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">Redis</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-700 font-semibold">Docker</span>
+            <span class="px-2.5 py-0.5 rounded-md bg-yellow-50 border border-yellow-300 text-[10px] font-mono text-yellow-700 font-bold">Prometheus</span>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+          <button onclick="cyberGamify.addXP(100, 'Launched CloudOrbit Preview')" class="text-xs font-mono text-yellow-600 hover:text-yellow-700 font-bold flex items-center gap-1.5">
+            <i class="fas fa-arrow-up-right-from-square"></i> Live Intel
+          </button>
+          <a href="https://github.com" target="_blank" class="text-xs font-mono text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1 font-semibold">
+            <i class="fab fa-github"></i> Repository
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- CLEAN WHITE FOOTER -->
+  <footer class="relative z-10 border-t border-slate-200 bg-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+        <span class="font-semibold">© 2026 Dhanushka Lakruwan. All Systems Engineered.</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="tel:0724380542" class="hover:text-yellow-600 transition-colors font-medium"><i class="fas fa-phone mr-1 text-yellow-500"></i> 072 438 0542</a>
+        <a href="mailto:mdlakruwan2020@gmail.com" class="hover:text-yellow-600 transition-colors font-medium"><i class="fas fa-envelope mr-1 text-yellow-500"></i> mdlakruwan2020@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    function filterQuests(category) {
+      if (window.cyberAudio) window.cyberAudio.playClick();
+      
+      const buttons = document.querySelectorAll('#quest-filters .filter-btn');
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-yellow-400', 'text-slate-950', 'font-bold');
+        btn.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-300');
+      });
+
+      event.currentTarget.classList.add('bg-yellow-400', 'text-slate-950', 'font-bold');
+      event.currentTarget.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+
+      const cards = document.querySelectorAll('#quests-container .quest-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

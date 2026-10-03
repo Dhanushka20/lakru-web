@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact & Transmission | Dhanushka Lakruwan</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cyberYellow: '#facc15',
+            cyberDark: '#0f172a',
+            cyberCard: '#ffffff',
+            cyberBorder: 'rgba(250, 204, 21, 0.4)'
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen relative flex flex-col justify-between selection:bg-yellow-400 selection:text-black bg-light-grid">
+
+  <!-- Interactive Cyber Canvas Background -->
+  <canvas id="cyber-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- TOP GAMIFIED HUD NAVBAR -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-white/90 border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-yellow-400 text-slate-950 font-black flex items-center justify-center font-mono text-xl yellow-glow-sm group-hover:scale-105 transition-transform shadow-md">
+          DL
+        </div>
+        <div>
+          <span class="font-heading font-black text-lg tracking-wider text-slate-900 group-hover:text-yellow-600 transition-colors">DHANUSHKA</span>
+          <span class="text-xs block text-yellow-600 font-mono font-bold tracking-widest uppercase">AI ARCHITECT // LVL 99</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 font-medium">
+        <a href="index.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-terminal text-xs mr-1 text-yellow-500"></i> HQ
+        </a>
+        <a href="about.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-id-card-clip text-xs mr-1 text-yellow-500"></i> ABOUT & STATS
+        </a>
+        <a href="projects.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-cubes-stacked text-xs mr-1 text-yellow-500"></i> QUESTS (PROJECTS)
+        </a>
+        <a href="contact.html" class="text-slate-600 hover:text-yellow-600 transition-colors py-2 px-1 text-sm tracking-wider font-mono">
+          <i class="fas fa-satellite-dish text-xs mr-1 text-yellow-500"></i> CONTACT
+        </a>
+      </nav>
+
+      <!-- HUD Controls -->
+      <div class="hidden lg:flex items-center gap-5">
+        <div class="bg-white border border-slate-200 shadow-sm px-3.5 py-1.5 rounded-xl flex items-center gap-3">
+          <i class="fas fa-bolt text-yellow-500 animate-pulse text-sm"></i>
+          <div>
+            <div class="flex items-center justify-between text-[11px] font-mono text-slate-500 gap-4">
+              <span class="lvl-val font-bold text-yellow-600">LVL 2</span>
+              <span><span class="xp-val text-slate-800 font-bold">1250</span> / 2000 XP</span>
+            </div>
+            <div class="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1 border border-slate-200">
+              <div class="xp-progress-bar h-full bg-yellow-400 rounded-full transition-all duration-500" style="width: 25%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="sound-toggle-btn px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-slate-600 hover:border-yellow-400 hover:text-yellow-600 transition-all text-xs font-mono flex items-center gap-2 shadow-sm">
+          <i class="sound-icon fas fa-volume-xmark"></i>
+          <span class="sound-text">SFX: OFF</span>
+        </button>
+
+        <a href="contact.html" class="cyber-clip-btn bg-yellow-400 text-slate-950 font-heading font-black text-xs uppercase tracking-wider px-5 py-2.5 hover:bg-yellow-300 yellow-glow-sm transition-all flex items-center gap-2 shadow-sm">
+          <span>Hire Me</span>
+          <i class="fas fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="flex md:hidden items-center gap-3">
+        <button class="sound-toggle-btn p-2 rounded-lg border border-slate-300 bg-white text-xs">
+          <i class="sound-icon fas fa-volume-xmark text-yellow-500"></i>
+        </button>
+        <button id="mobile-menu-toggle" class="p-2 text-slate-900 focus:outline-none">
+          <i class="fas fa-bars-staggered text-xl"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 flex flex-col gap-4 font-mono text-sm shadow-md">
+      <a href="index.html" class="text-slate-600 hover:text-yellow-600 py-1 flex items-center gap-2"><i class="fas fa-terminal text-xs"></i> HQ (Home)</a>
+      <a href="about.html" class="text-slate-600 hover:text-yellow-600 py-1 flex items-center gap-2"><i class="fas fa-id-card-clip text-xs"></i> About & Stats</a>
+      <a href="projects.html" class="text-slate-600 hover:text-yellow-600 py-1 flex items-center gap-2"><i class="fas fa-cubes-stacked text-xs"></i> Quests (Projects)</a>
+      <a href="contact.html" class="text-yellow-600 font-bold py-1 flex items-center gap-2"><i class="fas fa-satellite-dish text-xs"></i> Contact</a>
+    </div>
+  </header>
+
+  <!-- MAIN TRANSMISSION TERMINAL -->
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 flex-1">
+    
+    <!-- Header -->
+    <div class="border-b border-slate-200 pb-8 mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-yellow-50 border border-yellow-300 text-yellow-700 font-mono text-xs mb-3 font-semibold">
+        <i class="fas fa-satellite"></i> QUANTUM FREQUENCY ENCRYPTED
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 font-heading">
+        Initiate <span class="text-yellow-500">Transmission</span>
+      </h1>
+      <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl font-mono">
+        Need an AI integration, high-velocity web product, or technical leadership? Establish a direct uplink with Dhanushka Lakruwan.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      
+      <!-- Direct Contact Terminal Info (Left Column) -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <!-- Live Status Card (White Theme) -->
+        <div class="bg-white border border-yellow-400 p-7 rounded-2xl relative overflow-hidden clean-card-shadow">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="w-3 h-3 rounded-full bg-yellow-400 animate-ping"></span>
+            <span class="text-xs font-mono text-yellow-700 uppercase tracking-widest font-bold">UPLINK CHANNEL: READY</span>
+          </div>
+          <h2 class="text-2xl font-heading font-black text-slate-900">Direct Communication Hub</h2>
+          <p class="text-slate-600 text-xs font-mono mt-2 leading-relaxed">
+            I respond within 24 hours. Open for freelance contracts, full-time mission deployments, and technical advisory.
+          </p>
+
+          <div class="mt-6 space-y-4 font-mono text-xs">
+            
+            <!-- Phone -->
+            <a href="tel:0724380542" class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-yellow-400 flex items-center gap-4 transition-all group clean-card-shadow hover:scale-105">
+              <div class="w-11 h-11 rounded-xl bg-yellow-50 border border-yellow-300 text-yellow-600 flex items-center justify-center text-lg group-hover:scale-110 transition-transform shadow-sm">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[10px] font-bold">PHONE & WHATSAPP</span>
+                <span class="text-slate-900 group-hover:text-yellow-600 font-black text-sm transition-colors">072 438 0542</span>
+              </div>
+            </a>
+
+            <!-- Email -->
+            <a href="mailto:mdlakruwan2020@gmail.com" class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-yellow-400 flex items-center gap-4 transition-all group clean-card-shadow hover:scale-105">
+              <div class="w-11 h-11 rounded-xl bg-yellow-50 border border-yellow-300 text-yellow-600 flex items-center justify-center text-lg group-hover:scale-110 transition-transform shadow-sm">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="overflow-hidden">
+                <span class="text-slate-400 block text-[10px] font-bold">DIRECT GMAIL INBOX</span>
+                <span class="text-slate-900 group-hover:text-yellow-600 font-black text-sm truncate block transition-colors">mdlakruwan2020@gmail.com</span>
+              </div>
+            </a>
+
+            <!-- Location -->
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-4 clean-card-shadow">
+              <div class="w-11 h-11 rounded-xl bg-yellow-50 border border-yellow-300 text-yellow-600 flex items-center justify-center text-lg shadow-sm">
+                <i class="fas fa-map-pin"></i>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[10px] font-bold">LOCATION BASE</span>
+                <span class="text-slate-900 font-black text-sm">Sri Lanka (UTC+5:30) / Global Remote</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Social Matrix -->
+          <div class="mt-8 pt-6 border-t border-slate-100">
+            <span class="text-slate-400 font-mono text-[11px] block mb-3 uppercase tracking-wider font-bold">Neural Mesh Channels:</span>
+            <div class="flex items-center gap-3">
+              <a href="https://github.com" target="_blank" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 hover:border-yellow-400 text-slate-700 hover:text-yellow-600 flex items-center justify-center text-base transition-all shadow-sm">
+                <i class="fab fa-github"></i>
+              </a>
+              <a href="https://linkedin.com" target="_blank" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 hover:border-yellow-400 text-slate-700 hover:text-yellow-600 flex items-center justify-center text-base transition-all shadow-sm">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="https://twitter.com" target="_blank" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 hover:border-yellow-400 text-slate-700 hover:text-yellow-600 flex items-center justify-center text-base transition-all shadow-sm">
+                <i class="fab fa-x-twitter"></i>
+              </a>
+              <a href="https://telegram.org" target="_blank" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 hover:border-yellow-400 text-slate-700 hover:text-yellow-600 flex items-center justify-center text-base transition-all shadow-sm">
+                <i class="fab fa-telegram"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Transmission Form (Right Column, Clean White Card) -->
+      <div class="lg:col-span-7">
+        
+        <div class="bg-white border border-slate-200 p-8 rounded-2xl relative clean-card-shadow">
+          
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-terminal text-yellow-500"></i>
+              <span class="font-mono text-sm font-bold text-slate-900">TRANSMIT_PACKET.EXE</span>
+            </div>
+            <span class="font-mono text-[10px] text-slate-400 font-bold">ENCRYPTION: AES-256</span>
+          </div>
+
+          <form id="transmission-form" class="space-y-5" onsubmit="handleTransmission(event)">
+            
+            <!-- Name Input -->
+            <div>
+              <label class="block text-xs font-mono text-slate-600 uppercase tracking-wider mb-2 font-bold">Operative Name / Organization *</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <i class="fas fa-user text-xs"></i>
+                </div>
+                <input 
+                  type="text" 
+                  required 
+                  placeholder="e.g. Sarah Vance"
+                  class="w-full bg-slate-50 border border-slate-200 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 rounded-xl pl-10 pr-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none transition-all shadow-sm"
+                >
+              </div>
+            </div>
+
+            <!-- Email Input -->
+            <div>
+              <label class="block text-xs font-mono text-slate-600 uppercase tracking-wider mb-2 font-bold">Signal Destination (Email Address) *</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <i class="fas fa-at text-xs"></i>
+                </div>
+                <input 
+                  type="email" 
+                  required 
+                  placeholder="operative@domain.com"
+                  class="w-full bg-slate-50 border border-slate-200 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 rounded-xl pl-10 pr-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none transition-all shadow-sm"
+                >
+              </div>
+            </div>
+
+            <!-- Project Type / Mission Selection -->
+            <div>
+              <label class="block text-xs font-mono text-slate-600 uppercase tracking-wider mb-2 font-bold">Mission Directive Type</label>
+              <select class="w-full bg-slate-50 border border-slate-200 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 focus:outline-none transition-all shadow-sm">
+                <option value="ai">Generative AI / Autonomous Agents</option>
+                <option value="fullstack">Full Stack Web Application</option>
+                <option value="gamify">Gamified Interactive Experience</option>
+                <option value="consult">Technical Architecture Advisory</option>
+                <option value="other">Other High Priority Quest</option>
+              </select>
+            </div>
+
+            <!-- Transmission Payload (Message) -->
+            <div>
+              <label class="block text-xs font-mono text-slate-600 uppercase tracking-wider mb-2 font-bold">Transmission Payload (Message) *</label>
+              <textarea 
+                rows="4" 
+                required 
+                placeholder="Detail your quest objectives, project timeline, or questions..."
+                class="w-full bg-slate-50 border border-slate-200 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 rounded-xl p-3.5 text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none transition-all shadow-sm"
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+              type="submit" 
+              class="w-full cyber-clip-btn bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-heading font-black text-sm uppercase tracking-wider py-4 yellow-glow transition-all flex items-center justify-center gap-3 cursor-pointer shadow-md"
+            >
+              <i class="fas fa-paper-plane text-xs"></i>
+              <span>Send Encrypted Transmission (+300 XP)</span>
+            </button>
+
+          </form>
+
+          <!-- Success Modal / Overlay Feedback -->
+          <div id="transmission-success" class="hidden absolute inset-0 bg-white/95 rounded-2xl flex flex-col items-center justify-center p-6 text-center z-20 backdrop-blur-md">
+            <div class="w-16 h-16 rounded-2xl bg-yellow-100 border-2 border-yellow-400 text-yellow-600 flex items-center justify-center text-3xl mb-4 animate-bounce yellow-glow-sm shadow">
+              <i class="fas fa-check"></i>
+            </div>
+            <h3 class="text-2xl font-heading font-black text-slate-900">Transmission Broadcasted!</h3>
+            <p class="text-slate-600 font-mono text-xs max-w-sm mt-2">
+              Your signal has been encrypted and routed directly to Dhanushka Lakruwan's inbox. Expect response within 24 standard hours.
+            </p>
+            <div class="mt-4 px-3 py-1 bg-yellow-50 border border-yellow-300 rounded text-yellow-700 font-mono text-xs font-bold">
+              +300 XP CLAIMED! 🚀
+            </div>
+            <button onclick="resetTransmissionForm()" class="mt-6 text-xs font-mono text-slate-500 hover:text-slate-900 underline font-semibold">
+              Send another signal &rarr;
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- CLEAN WHITE FOOTER -->
+  <footer class="relative z-10 border-t border-slate-200 bg-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+        <span class="font-semibold">© 2026 Dhanushka Lakruwan. All Systems Engineered.</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="tel:0724380542" class="hover:text-yellow-600 transition-colors font-medium"><i class="fas fa-phone mr-1 text-yellow-500"></i> 072 438 0542</a>
+        <a href="mailto:mdlakruwan2020@gmail.com" class="hover:text-yellow-600 transition-colors font-medium"><i class="fas fa-envelope mr-1 text-yellow-500"></i> mdlakruwan2020@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    function handleTransmission(e) {
+      e.preventDefault();
+      if (window.cyberAudio) window.cyberAudio.playQuestComplete();
+      if (window.cyberGamify) window.cyberGamify.addXP(300, 'Transmission Dispatched');
+      
+      const modal = document.getElementById('transmission-success');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function resetTransmissionForm() {
+      const modal = document.getElementById('transmission-success');
+      const form = document.getElementById('transmission-form');
+      if (modal) modal.classList.add('hidden');
+      if (form) form.reset();
+    }
+  </script>
+</body>
+</html>
